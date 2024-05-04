@@ -103,61 +103,12 @@ class LayerStack(BaseModel):
             if isinstance(val, LayerLevel):
                 self.layers[field] = val
 
-    def get_layer_to_thickness(self) -> dict[tuple[int, int], float]:
-        """Returns layer tuple to thickness (um)."""
-        layer_to_thickness = {}
-
-        for level in self.layers.values():
-            layer = level.layer
-
-            if layer and level.thickness:
-                layer_to_thickness[layer] = level.thickness
-            elif hasattr(level, "operator"):
-                layer_to_thickness[level.layer] = level.thickness
-
-        return layer_to_thickness
-
     def get_component_with_derived_layers(self, component, **kwargs):
         """Returns component with derived layers."""
 
         return get_component_with_derived_layers(
             component=component, layer_stack=self, **kwargs
         )
-
-    def get_layer_to_zmin(self) -> dict[tuple[int, int], float]:
-        """Returns layer tuple to z min position (um)."""
-        return {
-            level.layer: level.zmin for level in self.layers.values() if level.thickness
-        }
-
-    def get_layer_to_material(self) -> dict[tuple[int, int], str]:
-        """Returns layer tuple to material name."""
-        return {
-            level.layer: level.material
-            for level in self.layers.values()
-            if level.thickness
-        }
-
-    def get_layer_to_sidewall_angle(self) -> dict[tuple[int, int], str]:
-        """Returns layer tuple to material name."""
-        return {
-            level.layer: level.sidewall_angle
-            for level in self.layers.values()
-            if level.thickness
-        }
-
-    def get_layer_to_info(self) -> dict[tuple[int, int], dict]:
-        """Returns layer tuple to info dict."""
-        return {level.layer: level.info for level in self.layers.values()}
-
-    def get_layer_to_layername(self) -> dict[tuple[int, int], str]:
-        """Returns layer tuple to layername."""
-
-        d = defaultdict(list)
-        for level_name, level in self.layers.items():
-            d[level.layer].append(level_name)
-
-        return d
 
     def to_dict(self) -> dict[str, dict[str, Any]]:
         return {level_name: dict(level) for level_name, level in self.layers.items()}
