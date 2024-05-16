@@ -1,26 +1,21 @@
 import gdsfactory as gf
-from gdsfactory.components.grating_coupler_elliptical import (
-    grating_coupler_elliptical_te,
-)
-from gdsfactory.components.mzi import mzi_phase_shifter
-from gdsfactory.components.pad import pad_small
 from gdsfactory.typings import ComponentSpec, CrossSectionSpec
 
 
 @gf.cell_with_child
 def add_fiber_array_optical_south_electrical_north(
-    component: ComponentSpec = mzi_phase_shifter,
-    pad: ComponentSpec = pad_small,
-    with_loopback: bool = True,
-    pad_spacing: float = 100.0,
-    fiber_spacing: float = 127.0,
-    pad_gc_spacing: float = 250.0,
-    electrical_port_names: list[str] | None = None,
-    electrical_port_orientation: float | None = 90,
-    npads: int | None = None,
-    pad_assigments: tuple[tuple[str, str], ...] | None = None,
-    grating_coupler: ComponentSpec = grating_coupler_elliptical_te,
-    xs_metal: CrossSectionSpec = "xs_metal_routing",
+    component: ComponentSpec,
+    pad: ComponentSpec,
+    with_loopback: bool,
+    pad_spacing: float,
+    fiber_spacing: float,
+    pad_gc_spacing: float,
+    electrical_port_names: list[str] | None,
+    electrical_port_orientation: float | None,
+    npads: int | None,
+    pad_assigments: tuple[tuple[str, str], ...] | None,
+    grating_coupler: ComponentSpec,
+    xs_metal: CrossSectionSpec,
     **kwargs,
 ) -> gf.Component:
     """Returns a fiber array with Optical gratings on South and Electrical pads on North.
